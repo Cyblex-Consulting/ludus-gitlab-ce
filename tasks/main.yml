@@ -36,7 +36,7 @@
 
 - name: (GITLAB-CE) Install Specific GitLab Community Edition
   package:
-    name: gitlab-ce={{gitlab_version}}-ce.0
+    name: gitlab-ce={{gitlab.version}}-ce.0
     state: present
     allow_downgrade: true
   when: not gitlab_installed.stat.exists and gitlab.version is defined
