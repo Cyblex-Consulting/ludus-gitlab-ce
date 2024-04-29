@@ -32,14 +32,14 @@
   package:
     name: gitlab-ce
     state: present
-  when: not gitlab_installed.stat.exists and not gitlab.version is defined
+  when: not gitlab_installed.stat.exists and not ludus_gitlab.version is defined
 
 - name: (GITLAB-CE) Install Specific GitLab Community Edition
   package:
-    name: gitlab-ce={{gitlab.version}}-ce.0
+    name: gitlab-ce={{ludus_gitlab.version}}-ce.0
     state: present
     allow_downgrade: true
-  when: not gitlab_installed.stat.exists and gitlab.version is defined
+  when: not gitlab_installed.stat.exists and ludus_gitlab.version is defined
 
 - name: (GITLAB-CE) Copy configuration
   template:
@@ -53,10 +53,10 @@
   when: not gitlab_installed.stat.exists
 
 - name: (GITLAB-CE) Set root email
-  ansible.builtin.command: "gitlab-rails runner \"user = User.find_by_username('root'); user.email='{{gitlab.emailroot}}';user.skip_reconfirmation!; user.save!\""
+  ansible.builtin.command: "gitlab-rails runner \"user = User.find_by_username('root'); user.email='{{ludus_gitlab.emailroot}}';user.skip_reconfirmation!; user.save!\""
   when: not gitlab_installed.stat.exists
 
 # Populate with content
 - name: (GITLAB-CE) Run playbook to add content
   include_tasks: content.yml
-  when: gitlab.groups is defined or gitlab.users is defined
+  when: ludus_gitlab.groups is defined or ludus_gitlab.users is defined

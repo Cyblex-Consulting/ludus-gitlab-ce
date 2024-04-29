@@ -1,7 +1,6 @@
-Ludus Role: GitLab Community Edition
-=========
+# Ansible Role: GitLab Community Edition (Ludus)
 
-This is a role for Ludus that handles the installation of a Gitlab instance.
+An Ansible Role that installs a Gitlab CE instance and optionnaly create groups and users.
 
 The role performs the following actions:
 - Setup a repository for GitLab
@@ -9,27 +8,63 @@ The role performs the following actions:
 - Configure GitLab Community Edition
 - Optionnaly, can create arbitrary groups and users
 
+## Requirements
 
-Role Variables
---------------
+None.
 
-Multiple variables can be configured. `gitlab.url` is the url where the instance will be exposed. Other parameters are related to the SMTP configuration.
+## Role Variables
 
-```yaml
-gitlab:
-  smtp: 127.0.0.1
-  url: http://localhost:8080
-  email_from: gitlab@example.com
-  displayname: gitlab
-  replyto: no-reply@example.com
-  emailroot: admin@example.com
-```
+Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+    # URL where the instance will be exposed
+    ludus_gitlab.url: http://localhost:8080
+
+    # Name of the instance
+    ludus_gitlab.displayname: MyCompany Gitlab
+
+    # SMTP Server to configure so Gitlab can send emails
+    ludus_gitlab.smtp: 127.0.0.1
+
+    # From email adress for messages sent by Gitlab
+    ludus_gitlab.email_from: gitlab@example.com
+
+    # From email adress for messages sent by Gitlab
+    ludus_gitlab.replyto: no-reply@example.com
+
+    # Root email account
+    ludus_gitlab.emailroot: admin@example.com
+
 
 By default, the latest version is installed. Define the variable `version` with the value in the range if you need a specific version.
 
-For the groups and users, they are optionnaly configured in `gitlab.groups` and `gitlab.users`.
+    # Optionnal: Gitlab version to install
+    ludus_gitlab.version: 16.7.0
 
-A full VM may look like this in the range configuration:
+
+For the groups and users, they are optionnaly configured in `ludus_gitlab.groups` and `ludus_gitlab.users`.
+
+    # Optionnal: Name of the group to create
+    ludus_gitlab.groups.name: MyGroup
+
+    # Optionnal: Login of the user to create
+    ludus_gitlab.users.name: jdoe
+
+    # Optionnal: Display name of the user to create
+    ludus_gitlab.users.display_name: John Doe
+
+    # Optionnal: Password of the user to create
+    ludus_gitlab.users.password: aA8MaQBCtBtPYAFh
+
+    # Optionnal: Email of the user to create
+    ludus_gitlab.users.email: jdoe@myrange.corp
+
+    # Optionnal: Group to apply to the user to create
+    ludus_gitlab.users.group: MyGroup
+
+    # Optionnal: Access level of the user to create
+    ludus_gitlab.users.access_level: maintainer
+
+## Example Ludus Range Config
 
 ```yaml
   - vm_name: "{{ range_id }}-GIT-01"
@@ -46,9 +81,9 @@ A full VM may look like this in the range configuration:
       snapshot: true
       block_internet: false
     roles:
-      - gitlab-ce
+      - ludus_gitlab_ce
     role_vars:
-      gitlab:
+      ludus_gitlab:
         version: 16.7.0
         smtp: 1.2.3.4
         email_from: gitlab@myrange.corp
@@ -73,3 +108,11 @@ A full VM may look like this in the range configuration:
             group: IT
             access_level: maintainer
 ```
+
+## License
+
+GPLv3
+
+## Author Information
+
+This role was created by [Cyblex Consulting](https://github.com/Cyblex-Consulting), for [Ludus](https://ludus.cloud/).
