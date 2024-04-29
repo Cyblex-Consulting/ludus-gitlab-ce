@@ -36,15 +36,15 @@
     api_token: "token-ansible-for-ludus"
     name: "{{ group.name }}"
     state: present
-  loop: "{{ gitlab.groups }}"
+  loop: "{{ ludus_gitlab.groups }}"
   loop_control:
     loop_var: group
-  when: gitlab.groups is defined
+  when: ludus_gitlab.groups is defined
 
 - name: Pause for 10 seconds
   ansible.builtin.pause:
     seconds: 10
-  when: gitlab.groups is defined
+  when: ludus_gitlab.groups is defined
 
 # Users
 
@@ -61,14 +61,14 @@
     access_level: "{{ user.access_level }}"
     confirm: false
     state: present
-  loop: "{{ gitlab.users }}"
+  loop: "{{ ludus_gitlab.users }}"
   loop_control:
     loop_var: user
-  when: gitlab.users is defined
+  when: ludus_gitlab.users is defined
 
 - name: Unset password expiration for users with gitlab-rails
   ansible.builtin.command: "gitlab-rails runner \"user = User.find_by_username('{{ user.name }}'); user.password_expires_at = Time.now + 86400; user.save!\""
-  loop: "{{ gitlab.users }}"
+  loop: "{{ ludus_gitlab.users }}"
   loop_control:
     loop_var: user
-  when: gitlab.users is defined
+  when: ludus_gitlab.users is defined
