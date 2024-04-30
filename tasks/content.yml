@@ -31,7 +31,7 @@
 
 - name: Create GitLab Groups
   community.general.gitlab_group:
-    api_url: "{{ gitlab.url }}"
+    api_url: "{{ gitlab_url }}"
     validate_certs: false
     api_token: "token-ansible-for-ludus"
     name: "{{ group.name }}"
@@ -50,7 +50,7 @@
 
 - name: Create GitLab Users
   community.general.gitlab_user:
-    api_url: "{{ gitlab.url }}"
+    api_url: "{{ gitlab_url }}"
     validate_certs: false
     api_token: "token-ansible-for-ludus"
     name: "{{ user.display_name }}"
