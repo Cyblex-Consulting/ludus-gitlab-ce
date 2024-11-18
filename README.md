@@ -81,7 +81,7 @@ For the groups and users, they are optionnaly configured in `ludus_gitlab.groups
       snapshot: true
       block_internet: false
     roles:
-      - ludus_gitlab_ce
+      - ludus-gitlab-ce
     role_vars:
       ludus_gitlab:
         version: 16.7.0
